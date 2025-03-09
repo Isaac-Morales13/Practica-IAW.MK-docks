@@ -4,7 +4,7 @@ En esta practica vamos a crear una pila LAMP y todas las herramientas adicionale
 > [!IMPORTANT]  
 > Antes de empezar a configurar los archivos vamos a crear la siguiente estructura de archivos y directorios(el directorio imagenes no es necesario)
 >
->![](../imagenes/estructura_general.png)
+>![](imagenes/estructura_general.png)
 
 ## Configuración del archivo `install_lamp.sh`
 Vamos a empezar configurando el archivo `install_lamp`(script que normalmente se utiliza para automatizar la instalación y configuración de un servidor ). 
@@ -36,7 +36,7 @@ a2enmod rewrite
 ``` 
 > [!IMPORTANT]  
 > Antes de seguir tenemos que tener configurado el archivo `000-default.conf` de esta forma:
->![](../imagenes/estructura-000-default.conf.png)
+>![](imagenes/estructura-000-default.conf.png)
 >
 >`DirectoryIndex:` Configura el orden prioridad de los archivos que se van a mostrar cuando se accede a un directorio
 >
@@ -103,7 +103,7 @@ Editamos el archivo /etc/hosts de nuestro equipo para resolver los nombres de do
 >[!IMPORTANT]
 >Antes de seguir tenemos que tener configurado el archivo index.php de esta forma:
 >
->![](../imagenes/estructura-index.php.png)
+>![](imagenes/estructura-index.php.png)
 
 Copiamos el script de prueba de PHP en /var/www/html
 ```bash
@@ -116,7 +116,7 @@ Modificamos el propietario y el grupo del archivo `index.php`
 `-R:`Recursivo.Indica que el cambio de propietario debe aplicarse no solo al directorio especificado, sino también a todos los archivos y subdirectorios dentro de él
 
 Hechas estas configuraciones si ponemos nuestra ip en algun navegador nos deberia salir esto
-![](../imagenes/web.ip.png)
+![](imagenes/web.ip.png)
 
 ### 1.3 Instalación de MySQL Server
 Ahora vamos a instalar el sistema gestor de bases de datos MySQL
@@ -125,7 +125,7 @@ apt install mysql-server -y
 ``` 
 Una vez instalado podemos acceder a el mediante terminal
 
-![](../imagenes/prueba_terminal_MySQL.png)
+![](imagenes/prueba_terminal_MySQL.png)
 
 Despues de estas configuraciones y añadir algunos de los comandos al script, deberia quedar asi:
 ```bash
@@ -187,15 +187,15 @@ Hecho esto vamos a importar el archivo de variables para tener acceso a estas va
 > [!IMPORTANT]  
 > Estas variables no las tenemos en este script porque estan almacenadas en el archivo .gitignore, cuya función es especificar qué archivos o directorios deben ser ignorados por Git. El archivo .env que es el que almacena las contraseñas esta almacenado ahí  para proteger la intengridad de estos datos importantes
 >
->![](../imagenes/archivo_.gitignore.png)
+>![](imagenes/archivo_.gitignore.png)
 >
 >El archivo env deberia contener algo parecido a esto pero con los valores de las variables(en la captura se han eliminado para proteger estos datos)
 >
->![](../imagenes/archivo_.env.png)
+>![](imagenes/archivo_.env.png)
 
 >[!TIP]
 > Para poder saber las variables que se configura se hace un archivo llamado `env.example` en que ponemos las variables sin sus valores(este archivo si se guarda en git)
->![](../imagenes/archivo_.env.example.png)
+>![](imagenes/archivo_.env.example.png)
 
 ### 2.2 Instalación de phpMyAdmin
 
@@ -234,7 +234,7 @@ Modificamos el propietario y el grupo del archivo
 chown -R www-data:www-data /var/www/html/adminer
 ``` 
 Hecho esto deberia ir si ponemos nuestra ip/adminer en un buscador
-![](../imagenes/adminer.png)
+![](imagenes/adminer.png)
 ### 2.4 Complementos mySQL
 Vamos a crear una base de datos de ejemplo
 ```bash
@@ -248,7 +248,7 @@ mysql -u root <<< "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD'"
 mysql -u root <<< "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%'"
 ``` 
 Ahora si nos vamos a nuestra IP/phpmyadmin nos deberia salir algo parecido a esto:
-![](../imagenes/phpmyadmin.png)
+![](imagenes/phpmyadmin.png)
 
 ### 2.5 Instalación de GoAcces
 GoAccess es una herramienta de análisis de logs en tiempo real y de visualización de datos
@@ -274,7 +274,7 @@ goaccess /var/log/apache2/access.log -o /var/www/html/stats/index.html --log-for
 
 > [!IMPORTANT]  
 > Antes de seguir tenemos que tener configurado el archivo `000-default.stats.conf de esta manera`:
-![](../imagenes/000-default-stats.png)
+![](imagenes/000-default-stats.png)
 
 Copiamos el archivo default stats a /etc/apache2/sites-available
 ```bash
@@ -307,7 +307,7 @@ Htaccess permite realizar ajustes en la configuración del servidor sin necesida
 > [!IMPORTANT]  
 > Antes de seguir tenemos que tener configurado el archivo `000-default-htaccess.conf`asi:
 >
->![](../imagenes/000-default-htaccess.conf.png)
+>![](imagenes/000-default-htaccess.conf.png)
 
  Copiamos el archivo default-stats
  ```bash
@@ -329,7 +329,7 @@ systemctl reload apache2
 > [!IMPORTANT]  
 > Antes de seguir tenemos que tener configurado el archivo `.htaccess` as:
 >
->![](../imagenes/htaccess.png)
+>![](imagenes/htaccess.png)
 
 Copiamos el archivo .htaccess a /var/www/html/stats para que al entrar a la web nos pida las credenciales 
  ```bash
@@ -337,10 +337,10 @@ cp ../conf/.htaccess /var/www/html/stats
 ``` 
 
 Ahora si nos vamos a nuestra IP/stats nos pedirá que iniciemos sesión con nuestra credenciales
-![](../imagenes/inicio_sesion.png)
+![](imagenes/inicio_sesion.png)
 
 Una vez introducidas las credenciales tendremos acceso al panel de control
-![](../imagenes/panel_control.png)
+![](imagenes/panel_control.png)
 
 Ya tendriamos completo el script que quedaria tal que asi:
  ```bash

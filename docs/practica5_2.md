@@ -111,10 +111,10 @@ volumes:
 
 Ahora pongo a funcionar los contenedor y podemos acceder a wordpress
 
-![](Imagenes/Ejecucion_script.png)
+![](imagenes/Ejecucion_script.png)
 
-![](Imagenes/Acceso_wordpress.png)
+![](imagenes/Acceso_wordpress.png)
 
-![](Imagenes/Acceso_a_wp.png)
+![](imagenes/Acceso_a_wp.png)
 
-![](Imagenes/wpadmin.png)
+![](imagenes/wpadmin.png)
