@@ -16,7 +16,7 @@
     
     
       
-        <title>Practica1 - IAW</title>
+        <title>Practica-IAW.5.2 - IAW</title>
       
     
     
@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#practica-iaw52" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -97,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Practica1
+              Practica-IAW.5.2
             
           </span>
         </div>
@@ -225,6 +230,48 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../practica1_1" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Practica 1_1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Practica 5_2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -242,6 +289,25 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-de-wordpress-con-docker-y-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue de WordPress con Docker y Docker Compose
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -257,9 +323,109 @@
 
 
 
-  <h1>Practica1</h1>
+<h1 id="practica-iaw52">Practica-IAW.5.2</h1>
+<h2 id="despliegue-de-wordpress-con-docker-y-docker-compose">Despliegue de WordPress con Docker y Docker Compose</h2>
+<p>En esta práctica tendremos que realizar la implantación de un sitio WordPress en Amazon Web Services (AWS) haciendo uso de contenedores Docker y la herramienta Docker Compose</p>
+<p>Comandos usados para levantar y apagar los contenedores:</p>
+<p><code>sudo docker compose up -d</code> </p>
+<p><code>sudo docker compose down -v</code></p>
+<p>El .env lo configuramos de esta manera</p>
+<pre><code class="language-bash"># Credenciales de MySQL
+MYSQL_ROOT_PASSWORD=asir
+MYSQL_DATABASE=wordpress_db
+MYSQL_USER=wordpress_user
+MYSQL_PASSWORD=wordpress_pass
 
+# Configuración de WordPress
+WORDPRESS_DATABASE_HOST=mysql
+WORDPRESS_DATABASE_USER=wordpress_user
+WORDPRESS_DATABASE_PASSWORD=wordpress_pass
+WORDPRESS_DATABASE_NAME=wordpress_db
+WORDPRESS_BLOG_NAME=&quot;Practica IAW&quot;
+WORDPRESS_USERNAME=admin
+WORDPRESS_PASSWORD=wordpress_pass
+WORDPRESS_EMAIL=demo@demo.es
+</code></pre>
+<p>y el docker-compose de esta</p>
+<pre><code class="language-bash">version: '3.8'
 
+services:
+  wordpress:
+    image: bitnami/wordpress:latest
+    container_name: wordpress
+    environment:
+      WORDPRESS_DATABASE_HOST: ${WORDPRESS_DATABASE_HOST}
+      WORDPRESS_DATABASE_USER: ${WORDPRESS_DATABASE_USER}
+      WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD}
+      WORDPRESS_DATABASE_NAME: ${WORDPRESS_DATABASE_NAME}
+      WORDPRESS_BLOG_NAME: ${WORDPRESS_BLOG_NAME}
+      WORDPRESS_USERNAME: ${WORDPRESS_USERNAME}
+      WORDPRESS_PASSWORD: ${WORDPRESS_PASSWORD}
+      WORDPRESS_EMAIL: ${WORDPRESS_EMAIL}
+    volumes:
+      - wordpress_data:/bitnami/wordpress
+    depends_on:
+      - mysql
+    restart: always
+    networks:
+      - frontend-network
+      - backend-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend-network
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - &quot;8080:80&quot;
+    environment:
+      PMA_HOST: mysql
+    networks:
+      - frontend-network
+    depends_on:
+      - mysql
+    restart: always
+
+  https-portal:
+    image: steveltn/https-portal:latest
+    container_name: https-portal
+    environment:
+      DOMAINS: &quot;wordpressdocker.zapto.org -&gt; http://wordpress:8080&quot;
+      STAGE: &quot;production&quot;
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+    networks:
+      - frontend-network
+    depends_on:
+      - wordpress
+    restart: always
+
+networks:
+  frontend-network:
+  backend-network:
+
+volumes:
+  mysql_data:
+  wordpress_data:
+</code></pre>
+<p>Ahora pongo a funcionar los contenedor y podemos acceder a wordpress</p>
+<p><img alt="" src="Imagenes/Ejecucion_script.png" /></p>
+<p><img alt="" src="Imagenes/Acceso_wordpress.png" /></p>
+<p><img alt="" src="Imagenes/Acceso_a_wp.png" /></p>
+<p><img alt="" src="Imagenes/wpadmin.png" /></p>
 
 
 
