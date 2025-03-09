@@ -3,8 +3,8 @@ site_name: IAW
 nav:
     - Principal: index.md
     - Acerca de: about.md
-    - Practica 1_1: practica1_1
-    - Practica 5_2: practica5_2
+    - Practica 1_1: practica1_1.md
+    - Practica 5_2: practica5_2.md
 
 theme:
   name: material
